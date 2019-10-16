@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Homepage(),
+    ));
+
+class Homepage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      //once we create the SliverAppbar we can delete appBar
+
+      // appBar:   AppBar(
+      //   title:   Text("SliverBar Demo"),
+      // ),
+
+      //You need to use CustomScrollView to have slivers options
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            //SliverAppbar has many features below are some
+            expandedHeight: 150.0,
+            floating: true,
+            pinned: false, //change this to "true" and see what happens
+            title: Text("Sliverbar Demo 2"),
+            flexibleSpace: FlexibleSpaceBar(
+              background: Image.network(
+                'https://scontent.fszb1-1.fna.fbcdn.net/v/t1.0-9/51068933_577228886086762_464672434444828672_n.jpg?_nc_cat=109&_nc_oc=AQkofrLUYfL9JU4OUktynwoIPAZ96euQWvx3Txy4r9rpAcaZtPEWAa4_7tdDOg9SqhcFJ_z051eqZFOzcuVwShZ_&_nc_ht=scontent.fszb1-1.fna&oh=d22f88f31bbad9844f9fba30144efc93&oe=5E246C7E',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          //If you want a list use this
+          //============================
+          //   SliverList(
+          //   delegate:
+          //         SliverChildBuilderDelegate((context, index) =>   ListTile(title:   Text('List Items $index')),
+          //   ),
+          // )
+          //============================
+
+          //If you just want to place anything
+          //============================
+          SliverFillRemaining(
+            child: Column(
+              children: <Widget>[
+                Text('Name', style: TextStyle(fontSize: 30.0)),
+                TextField(),
+              ],
+            ),
+          ),
+          //===========================
+
+        ],
+      ),
+    );
+  }
+}
