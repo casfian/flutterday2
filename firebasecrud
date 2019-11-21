@@ -1,0 +1,250 @@
+//Main.dart
+
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:husmkk/listpage.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Sewa Kerusi roda',
+      home: Home(),
+    );
+  }
+}
+
+class Home extends StatelessWidget {
+  final _namaController = TextEditingController();
+  final _noicController = TextEditingController();
+  final _nokadController = TextEditingController();
+  final _timestampController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+          appBar: AppBar(
+            title: Text('Material App Bar'),
+          ),
+          body: ListView(
+            children: <Widget>[
+              ListTile(
+                title: Text('Nama: '),
+                subtitle: TextField(
+                  controller: _namaController,
+                ),
+              ),
+              ListTile(
+                title: Text('No IC: '),
+                subtitle: TextField(
+                  controller: _noicController,
+                ),
+              ),
+              ListTile(
+                title: Text('No Kad: '),
+                subtitle: TextField(
+                  controller: _nokadController,
+                ),
+              ),
+              ListTile(
+                title: Text('Time: '),
+                subtitle: TextField(
+                  controller: _timestampController,
+                ),
+              ),
+              ListTile(
+                title: RaisedButton(
+                  child: Text('Submit to Firebase'),
+                  onPressed: () async {
+                    await Firestore.instance
+                        .collection('pengguna')
+                        .document()
+                        .setData({
+                      'nama': _namaController.text,
+                      'noic': _noicController.text,
+                      'nokad': _nokadController.text,
+                      'timestamp': _timestampController.text,
+                    });
+                  },
+                ),
+              ),
+              ListTile(
+                title: RaisedButton(
+                  child: Text('See List'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ListPage()),
+                    );
+                  },
+                ),
+              )
+            ],
+          ));
+  }
+}
+
+
+
+//listpage.dart
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class ListPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Material App Bar'),
+        ),
+        body: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance.collection('pengguna').snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return Center(child: CircularProgressIndicator());
+              default:
+                return new ListView(
+                  children:
+                      snapshot.data.documents.map((DocumentSnapshot document) {
+                    return ListTile(
+                        title: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              width: 200,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(document['nama'].toString()),
+                                Text(document['noic'].toString()),
+                                Text(document['nokad'].toString()),
+                                Text(document['timestamp'].toString()),
+                              ],
+                            ),
+                            ),
+                            Column(
+                              children: <Widget>[
+                                //column letak buttons
+                                IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    //delete
+                                    Firestore.instance.collection("pengguna").document(document.documentID)
+                                          .delete();
+                                  },
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ],
+                    ));
+                  }).toList(),
+                );
+            }
+          },
+        ));
+  }
+}
+
+
+//pubspec.yaml
+//add dependency cloud_firebase
+dependencies:
+  flutter:
+    sdk: flutter
+  cloud_firestore: ^0.12.10+2
+
+
+//If error for Android 
+//Check appID in AndroidManifest.xml 
+//build Gradle
+//(5x places)
+//and also make sure that you add
+//add multiDex enabled at app build.gradle
+//see below example
+
+/*
+//app build.gradle
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+android {
+    compileSdkVersion 28
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId "my.caspian.husmkk"
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    implementation 'com.google.firebase:firebase-analytics:17.2.0'
+    implementation 'com.android.support:multidex:1.0.3'
+}
+
+apply plugin: 'com.google.gms.google-services'
+*/
