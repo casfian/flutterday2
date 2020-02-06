@@ -1,0 +1,101 @@
+//copypaste into your main dart file
+//demo a gradient background and also makes the textfield and button pretty
+
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Make it Pretty',
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  Color gradientStart = Colors.blue[100]; 
+  Color gradientEnd = Colors.purple[500]; 
+
+  @override
+  Widget build(BuildContext context) {
+
+  final iconpix = Padding(
+    padding: EdgeInsets.all(1.0),
+     child: Icon(Icons.star, size: 80, color: Colors.white,),
+  );
+
+  final email = TextFormField(
+      keyboardType: TextInputType.emailAddress,
+      autofocus: true,
+      //initialValue: 'bbcaspian@gmail.com',
+      decoration: InputDecoration(
+        hintText: 'Key-in your email',
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+      ),
+    );
+
+  final welcome = Padding(
+    padding: EdgeInsets.all(1.0),
+      child: Text(
+        'Welcome',
+        style: TextStyle(fontSize: 30.0, color: Colors.white),
+      ),
+  );
+
+  final myButton = Padding(
+      padding: EdgeInsets.symmetric(vertical: 20.0),
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        onPressed: () {
+          //code
+        },
+        padding: EdgeInsets.all(15),
+        color: Colors.purpleAccent,
+        child: Text('Click Button Here', style: TextStyle(color: Colors.white)),
+      ),
+      //------ 
+    );
+
+  final bodycontent = Container(
+    width: MediaQuery.of(context).size.width,
+    padding: EdgeInsets.all(28.0),
+    decoration: new BoxDecoration(
+    gradient: new LinearGradient(
+      colors: [gradientStart, gradientEnd],
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            stops: [0.0, 1.0],
+            tileMode: TileMode.clamp),
+          ),
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 70.0),
+              iconpix,
+              welcome,
+              SizedBox(height: 20.0),
+              email,
+              SizedBox(height: 10.0),
+              myButton,
+            ],
+          ),
+  );
+
+    return Scaffold(
+      body: bodycontent,
+    );
+  }
+}
