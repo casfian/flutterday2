@@ -12,7 +12,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   //function
   //basic Auth
-  Future<String> getPost() async {
+  Future<String> sendPost() async {
     var url = 'http://yourwebsite.com/index.php';
     String username = 'test';
     String password = '123£';
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
 
   //function
   //Guna API Key
-  Future<String> getPost2() async {
+  Future<String> sendPost() async {
     var url = 'http://yourwebsite.com/index.php';
     
     var response = await http.post(url, headers: {
@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
             child: RaisedButton(
               child: Text('Submit Data'),
               onPressed: () async {
-                getPost();
+                sendPost();
               },
             ),
           ),
