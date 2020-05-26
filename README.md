@@ -6,4 +6,5 @@ Good luck.
 # codes
 
 Flutter Day 2
-1.
+1. Create & Read QRCode
+2. ListView
