@@ -7,4 +7,8 @@ Good luck.
 
 Flutter Day 2
 1. Create & Read QRCode
-2. ListView
+2. ListView Search
+3. GeoLocation
+4. Indepth FireStoreCRUD
+5. SliverAppBar
+6. Gradient Background
