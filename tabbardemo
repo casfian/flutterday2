@@ -1,0 +1,78 @@
+//Instructions:
+//create 3 dart files and copypaste these codes
+
+//main.dart
+//==========================================
+import 'package:flutter/material.dart';
+import 'package:tabbardemo/screen1.dart';
+import 'package:tabbardemo/screen2.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.directions_car)),
+                Tab(icon: Icon(Icons.directions_transit))
+              ],
+            ),
+            title: Text('Flutter Tabs demo'),
+          ),
+          body: TabBarView(
+            children: [
+              Screen1(),
+              Screen2(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+//===============================
+
+
+
+//screen1.dart
+=================================
+import 'package:flutter/material.dart';
+
+class Screen1 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        child: Text('Screen1'),
+      ),
+    );
+  }
+}
+//===============================
+
+
+
+//screen2.dart
+=================================
+import 'package:flutter/material.dart';
+
+class Screen2 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        child: Text('Screen2'),
+      ),
+    );
+  }
+}
+//===============================
