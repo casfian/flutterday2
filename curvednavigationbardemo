@@ -71,3 +71,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
         ));
   }
 }
+
+
+
+
+
+//tambah dependecy kat pubSpec.yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  curved_navigation_bar: ^0.3.2  
+
