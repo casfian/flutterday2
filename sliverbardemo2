@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
     @override
     Widget build(BuildContext context) {
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
           body: CustomScrollView(
             slivers: <Widget>[
@@ -21,16 +22,16 @@ import 'package:flutter/material.dart';
                 pinned: true,
                 snap: true,
                 elevation: 50,
-                backgroundColor: Colors.pink,
+                backgroundColor: Colors.blue,
                 flexibleSpace: FlexibleSpaceBar(
                     centerTitle: true,
-                    title: Text('Title',
+                    title: Text('Sliverbar Demo 2',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16.0,
                         )),
                     background: Image.network(
-                      'https://images.pexels.com/photos/443356/pexels-photo-443356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+                      'https://scontent.fkul6-2.fna.fbcdn.net/v/t1.0-9/93142566_886375458505435_5068231099142897664_o.jpg?_nc_cat=107&_nc_sid=825194&_nc_ohc=1Zx2DLGoVNYAX9fPF8D&_nc_ht=scontent.fkul6-2.fna&oh=8fe8125b2a3ae13e3b499c9adfff21b7&oe=5F0BB67F',
                       fit: BoxFit.cover,
                     )
                 ),
