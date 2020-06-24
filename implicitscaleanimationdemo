@@ -1,0 +1,54 @@
+//main.dart
+//Implicit Animation, Scaling an Image
+
+import 'dart:math';
+import 'package:flutter/material.dart';
+
+class ScaleAnimation extends StatefulWidget {
+  @override
+  _ScaleAnimationState createState() => _ScaleAnimationState();
+}
+
+class _ScaleAnimationState extends State<ScaleAnimation>
+    with SingleTickerProviderStateMixin {
+  AnimationController animationController;
+  Animation<double> animation;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 5),
+    )..addListener(() => setState(() {}));
+    animation = CurvedAnimation(
+      parent: animationController,
+      curve: Curves.easeInOut,
+    );
+
+    animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Scale Animation")),
+      body: Center(
+        child: ScaleTransition(
+          scale: animation,
+          child: Container(
+            height: 80,
+            width: 80,
+            child: FlutterLogo(),
+          ),
+        ),
+      ),
+    );
+  }
+}
